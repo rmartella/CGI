@@ -5,4 +5,11 @@ Theory/*/*.out
 Theory/*/*.synctex.gz
 Theory/*/*.toc
 Theory/*/*.snm
+Laboratory/*/*.aux
+Laboratory/*/*.log
+Laboratory/*/*.nav
+Laboratory/*/*.out
+Laboratory/*/*.synctex.gz
+Laboratory/*/*.toc
+Laboratory/*/*.snm
 *.swp
