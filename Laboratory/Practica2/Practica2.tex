@@ -15,6 +15,21 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
+\lstdefinestyle{customc}{
+  numbers=left,
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
 %\lstset{language=R,
 %    basicstyle=\small\ttfamily,
 %   stringstyle=\color{DarkGreen},
@@ -134,23 +149,120 @@ Fragment Shader, agregar, compilar y verificar y usar shaders, e identificarlos 
 de información, se explica cuáles son los parámetros que pueden recibir estos comandos y
 eso como afecta a lo dibujado. Posteriormente se utilizará los atributos de vértices usando
 \textbf{glVertexAttribPointer}, \textbf{glEnableVertexAttribArray}.
-\\
-Finalmente se explican los comandos referentes a la creación de ventana 
 \item \textbf{Datos necesarios.}
 Librería OpenGL 3.3, librería de creación de ventanas, IDE de desarrollo (Visual Studio 2017.
 \end{itemize}
 \subsection{Desarrollo de actividades}
 \begin{enumerate}
 \item Navegar hasta el directorio de trabajo de la práctica pasada (Donde se clono el
-repositorio), abrir un bash de git y teclear git pull origin master. Debe validar que
+repositorio), abrir un bash de git y teclear \textbf{git pull origin master}. Debe validar que
 la actualización esté correcta.
-\item Se explica el código base para para el uso de la librería GLFW y GLEW.
+\item Ejecutar el proyecto \textbf{02-IntroOpenGL} y revisar el funcionamiento del programa.
 \item Se explica el uso de los eventos de los dispositivos convencionales mouse y
 teclado (Sí es necesario).
+\item En base al código de ejemplo \ref{list:first} agregar el shader de fragmento, no olvidar adjuntar el fragment shader al programa \textbf{glAttachShader(shaderProgramID, fragmentShaderID);} y utilizar en el loop principal el programa con los shaders \textbf{glUseProgram(shaderProgramID);}
+
+\begin{lstlisting}[label={list:first},caption=Ejemplo para crear el Shader de Fragmento., style=customc]
+	// Se crea el id del Fragment Shader
+	fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+	// Se agrega el codigo fuente al ID
+	glShaderSource(fragmentShaderID, 1, &fragmentShaderSource, NULL);
+	// Compilacion de Fragment Shader
+	glCompileShader(fragmentShaderID);
+	// Se obtiene el estatus de la compilacion del Fragment shader
+	glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &success);
+	if(!success){
+		// En caso de error se obtiene el error y lanza mensaje con error
+		glGetShaderInfoLog(fragmentShaderID, 512, NULL, infoLog);
+		std::cout << "Error al compilar el FRAGMENT_SHADER." << infoLog << std::endl;
+	}
+\end{lstlisting}
+
 \item Se muestra el ejemplo que crea un VAO, VBO, creación de un buffer y
 transferencia de memoria a la GPU, se muestra como reciben los bloques de
 memoria los Vertex shader y Fragment Shader.
-\item Se muestra el uso los atributos de vértices, y los bloques de memoria.
+\item Crear un estructura como se muestra en el código de la sección \ref{list:second}, en esta estructura se tienen dos atributos de vertices (Posición y color).
+
+\begin{lstlisting}[label={list:second},caption=Ejemplo para crear el Shader de Fragmento., style=customc]
+typedef struct _Vertex {
+	float m_Pos[3];
+	float m_Color[3];
+} Vertex;
+\end{lstlisting}
+
+\item Modificar el arreglo de vertices contemplando el nuevo atributo, como se muestra en el ejemplo \ref{list:third}, ¿Que forma tiene?.
+
+\begin{lstlisting}[label={list:third},caption=Arreglo de vertices., style=customc]
+	// Se definen los vertices de la geometria a dibujar
+	Vertex vertices [] =
+	{
+		{{-0.5f,-0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}},
+		{{ 0.5f,-0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+		{{ 0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+		{{-0.5f,-0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}},
+		{{ 0.5f, 0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
+		{{-0.5f, 0.5f, 0.5f}, {1.0f, 0.0f, 1.0f}}
+	};
+\end{lstlisting}
+
+\item Obtenga el tamaño del arreglo de vertices, el tamaño de solo un vertice y el tamaño del atributo posición, imprimirlos en la consola como se muestra en el ejemplo \ref{list:four}.
+
+\begin{lstlisting}[label={list:four},caption={Tamaño del buffer, vertice y atributo posición.}, style=customc]
+	size_t bufferSize = sizeof(vertices);
+	size_t vertexSize = sizeof(vertices[0]);
+	size_t rgbOffset = sizeof(vertices[0].m_Pos);
+
+	std::cout << "Vertices:" << std::endl;
+	std::cout << "bufferSize:" << bufferSize << std::endl;
+	std::cout << "vertexSize:" << vertexSize << std::endl;
+	std::cout << "rgbOffset:" << rgbOffset << std::endl;
+\end{lstlisting}
+
+\item Modificar el linkeo de los atributos para el buffer anterior \ref{list:eight}, ádemas agregar como entrada al shader de vertices (Ejemplo \ref{list:six}) y fragmento (Ejemplo \ref{list:seven}).  Realice un diagrama de la estructura de los datos y sus atributos describiendo cada uno de los parámetros.
+
+\begin{lstlisting}[label={list:six},caption={Vertex Shader.}, style=customc]
+#version 330 core
+layout (location = 0) in vec3 in_position;
+layout (location = 1) in vec3 in_color;
+
+out vec3 our_color;
+
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+void main(){
+
+	gl_Position = projection * view * model * vec4(in_position, 1.0);
+	our_color = in_color;
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[label={list:seven},caption={Fragment Shader.}, style=customc]
+#version 330 core
+
+in vec3 our_color;
+out vec4 color;
+
+void main(){
+	
+	color = vec4(our_color, 1.0);
+
+}
+\end{lstlisting}
+
+\begin{lstlisting}[label={list:eight},caption={Linkeo de los atributos.}, style=customc]
+	// Se crea un indice para el atributo del vertice posicion, debe corresponder al location del atributo del shader
+	// indice del atributo, Cantidad de datos, Tipo de dato, Normalizacion, Tamanio del bloque (Stride), offset
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, (GLvoid*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize, (GLvoid*)rgbOffset);
+	// Se habilita el atributo del vertice con indice 0 (posicion)
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+\end{lstlisting}
+
 \item Modificar el main.cpp para dibujar las siguientes
 figuras, se deben usar dos VAOs y VBOs diferentes. Finalmente, con la tecla E
 se muestra la estrella y con la tecla C la casa.
@@ -164,7 +276,7 @@ se muestra la estrella y con la tecla C la casa.
 \end{tabular}
 \end{center}
 \end{figure}
-\item Se debe reportar y subir a github el ejercicio 6 anterior.
+\item Se debe reportar y subir a github todos sus ejercicios.
 \end{enumerate}
 \section{Observaciones y Conclusiones}
 \section{Anexos}
