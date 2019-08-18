@@ -15,6 +15,23 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
+\renewcommand{\lstlistingname}{Ejemplo}% Listing -> Ejemplo
+
+\lstdefinestyle{customc}{
+  numbers=left,
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
 %\lstset{language=R,
 %    basicstyle=\small\ttfamily,
 %   stringstyle=\color{DarkGreen},
@@ -142,15 +159,100 @@ Librería OpenGL 3.3, librería de creación de ventanas, IDE de desarrollo (Vis
 \end{itemize}
 \subsection{Desarrollo de actividades}
 \begin{enumerate}
-\item Se explica el código para crear una clase que maneje el programa y los shaders.
-\item Se explica el código base para crear un cubo utilizando indices.
-\item Se muestra el sistema de referencia de dibujo glViweport()
-\item Se utiliza el concepto de variables uniform y su utilidad.
+\item Ejecutar el código base de la práctica \textbf{03-SistemasCoordenados}, observar la ejecución.
+\item Explicar el código de la Clase \textbf{Shader.h} y su implementación \textbf{Shader.cpp}.
+\item Utilice la Clase Shader para instanciar un objeto de éste tipo, para utilizarlo es necesario incluir  la cabecera \textbf{\#include "Headers/Shader.h"}, para instanciar el objeto utilice: \textbf{Shader shader;} y por último agregar la inicialización de los shaders en el método initialize: \textbf{shader.initialize("../Shaders/transformaciones.vs", "../Shaders/transformaciones.fs");}
+\item Localizar y abrir los archivo que contienen el código de los Shaders \textbf{../Shaders/transformaciones.vs} y \textbf{../Shaders/transformaciones.fs}.
+\item Se explican los código de los Shaders.
+\item Crear una matriz de proyección en perspectiva en el loop principal: \\ \textbf{glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) screenWidth / (float) screenHeight, 0.01f, 100.0f);}
+\item Agregar la matriz de modelo vista y proyección, realizar una translación a la matriz de vista en dirección del vector $\bar{v} = (0.0, 0.0, -3.0)$,y por ulimo enviar las matrices a los shaders. Tomar como ejemplo el código de la sección \ref{list:first}.
+
+\begin{lstlisting}[label={list:first},caption={Ejemplo para envíar las matrices del modelo, vista y proyección.}, style=customc]
+glm::mat4 model = glm::mat4(1.0f);
+glm::mat4 view = glm::mat4(1.0f);
+view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+shader.setMatrix4("model", 1, false, glm::value_ptr(model));
+shader.setMatrix4("view", 1, false, glm::value_ptr(view));
+shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
+\end{lstlisting}
+
+\item Agregar la bandera \textbf{GL\_DEPTH\_BUFFER\_BIT} a la función \textbf{glClear}, con esta bandera se refrescan el buffer de color y el buffer de profundidad.\\ \textbf{glClear(GL\_COLOR\_BUFFER\_BIT $\mid$ GL\_DEPTH\_BUFFER\_BIT);}, despúes de esta línea de código agregar la activación del shader \textbf{shader.turnOn();}, esta función se encarga de indicar que programa usar, es equivalente a \textbf{glUseProgram(shaderProgramID);}.
+
+\item Ejecutar el programa y revisar sí la geometría corresponde a la especificada en el arreglo.
+
+\item Crear otro buffer de tipo \textbf{GL\_ELEMENT\_ARRAY\_BUFFER}.
+\begin{lstlisting}[label={list:second},caption={Ejemplo para crear un arreglo de indices.}, style=customc]
+// Cambiamos el estado para indicar que usaremos el id del EBO como Arreglo de indices (GL_ELEMENT_ARRAY_BUFFER)
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+// Copiamos los datos de los vertices a memoria del procesador grafico
+//           TIPO DE BUFFER     TAMANIO          DATOS    MODO (No cambian los datos)
+glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+\end{lstlisting}
+
+ En éste se almacenará el arreglo \textbf{indices}, el arreglo indices indica la conexión de cada vertice, ésto ahorra la cantidad de memoria que se ocupa, aún que por otro lado se requiere un arreglo de enteros. Remplazar la función \textbf{glDrawArrays(GL\_TRIANGLES, 0, 3);} por \textbf{glDrawElements(GL\_TRIANGLES, 24, GL\_UNSIGNED\_INT, 0);}
+
+\item Cambiar el sistema de referencia de puerto de vista con la función \textbf{glViweport(GLint x, GLint y, GLsizei width, GLsizei height)}:
+\begin{itemize}
+\item x, y: Son las coordenadas de la esquina inferior izquierda de la zona de dibujo
+\item width, height: Especifican el ancho y alto de la zona de dibujo.
+\end{itemize}
+
+Probar con los siguientes parámetros:
+
+\begin{itemize}
+\item Dividir a la mitad la zona de dibujo en el eje y.
+\item La esquina inferior en las coordenadas (0, 0) y el tamaño de la zona de dibujo a la mitad de cada eje.
+\end{itemize}
+
+\item Colocar dos cubos en dos diferentes posiciones y diferente profundidad en z, ejemplo 
+
+\begin{lstlisting}[label={list:third},caption={Ejemplo para colocar dos cubos.}, style=customc]
+shader.turnOn();
+
+glm::mat4 view = glm::mat4(1.0f);
+view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+shader.setMatrix4("view", 1, false, glm::value_ptr(view));
+shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
+
+glm::mat4 model = glm::translate(glm::mat4(1.0), glm::vec3(-1.0, 1.0, -2.0));
+shader.setMatrix4("model", 1, false, glm::value_ptr(model));
+
+// Se indica el buffer de datos y la estructura de estos utilizando solo el id del VAO
+glBindVertexArray(VAO);
+// Primitiva de ensamble
+glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+glBindVertexArray(0);
+
+model = glm::translate(glm::mat4(1.0), glm::vec3(2.0, 1.0, -4.0));
+shader.setMatrix4("model", 1, false, glm::value_ptr(model));
+
+// Se indica el buffer de datos y la estructura de estos utilizando solo el id del VAO
+glBindVertexArray(VAO);
+// Primitiva de ensamble
+glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
+glBindVertexArray(0);
+
+shader.turnOff();
+\end{lstlisting}
+
 \item Se explica y se cambian los parámetros que definen los diferentes tipos de
 proyecciones.
-\item Ejercicio: Los siguientes ejercicios se deben crear con un cubo con un color por cada lado. Se debe crear otro VAO y VBO
+
+\begin{itemize}
+\item \textbf{glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) screenWidth / (float) screenHeight, 0.01f, 100.0f);}
+\item \textbf{glm::mat4 projection = glm::frustum(-0.005, 0.005, -0.005, 0.005, 0.01, 100.0);}
+\item \textbf{glm::mat4 projection = glm::ortho(-5.0, 5.0, -5.0, 5.0, 0.01, 10.0);}
+\end{itemize}
+\end{enumerate}
+
+\subsection{Ejercicios}
+\begin{enumerate}
+\item Los siguientes ejercicios se deben crear con un cubo con un color por cada lado. Se debe crear otro VAO y VBO
 \item Utilizando un cubo unitario con centro en el origen como primitiva, y la
 transformación de translación y escalamiento, se creará una escena con las siglas CG 2019.
+
 \item Se procede a crear un par de figuras instanciado el cubo y aplicando
 transformaciones básicas a cada una de las instancias.
 \begin{figure}[htb]
@@ -158,7 +260,7 @@ transformaciones básicas a cada una de las instancias.
 \includegraphics[width=10cm]{images/Transformaciones.png}
 \end{center}
 \end{figure}
-\item \textbf{Ejercicio:} Crear la misma forma de la estrella de la práctica 2 con indices.
+\item Crear la misma forma de la estrella de la práctica 2 con indices.
 \item Deben subir sus ejercicios en Github y colocar la liga en su reporte.
 \end{enumerate}
 \section{Observaciones y Conclusiones}
