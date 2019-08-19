@@ -183,6 +183,12 @@ shader.setMatrix4("projection", 1, false, glm::value_ptr(projection));
 
 \item Crear otro buffer de tipo \textbf{GL\_ELEMENT\_ARRAY\_BUFFER}.
 \begin{lstlisting}[label={list:second},caption={Ejemplo para crear un arreglo de indices.}, style=customc]
+glGenBuffers(1, &EBO);
+
+.
+.
+.
+
 // Cambiamos el estado para indicar que usaremos el id del EBO como Arreglo de indices (GL_ELEMENT_ARRAY_BUFFER)
 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 // Copiamos los datos de los vertices a memoria del procesador grafico
@@ -190,7 +196,14 @@ glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 \end{lstlisting}
 
- En éste se almacenará el arreglo \textbf{indices}, el arreglo indices indica la conexión de cada vertice, ésto ahorra la cantidad de memoria que se ocupa, aún que por otro lado se requiere un arreglo de enteros. Remplazar la función \textbf{glDrawArrays(GL\_TRIANGLES, 0, 3);} por \textbf{glDrawElements(GL\_TRIANGLES, 24, GL\_UNSIGNED\_INT, 0);}
+No olvidar eliminar el buffer de indices en el método \textbf{destroy} como se muestra en el ejemplo \ref{list:four}.
+\begin{lstlisting}[label={list:four},caption={Eliminar el buffer de indices.}, style=customc]
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+glDeleteBuffers(1, &EBO);
+glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+\end{lstlisting}
+
+En éste se almacenará el arreglo \textbf{indices}, el arreglo indices indica la conexión de cada vertice, ésto ahorra la cantidad de memoria que se ocupa, aún que por otro lado se requiere un arreglo de enteros. Remplazar la función \textbf{glDrawArrays(GL\_TRIANGLES, 0, 3);} por \textbf{glDrawElements(GL\_TRIANGLES, 24, GL\_UNSIGNED\_INT, 0);}
 
 \item Cambiar el sistema de referencia de puerto de vista con la función \textbf{glViweport(GLint x, GLint y, GLsizei width, GLsizei height)}:
 \begin{itemize}
