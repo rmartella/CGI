@@ -103,8 +103,8 @@
 \begin{itemize}
 \item Por ejemplo si la matriz de proyección especifica un rango entre -1000 a 1000 el punto (1250, 500, 750) no será visible debido a que x no esta en el rango de 1000 a 1000.
 \item Si una primitiva por ejemplo un triangulo esta fuera del volumen de recorte OpenGL reconstruye el triangulo para que muestra el pedazo que cae dentro del volumen de recorte.
-\item Este volumen de recorte es comúnmente llamado Frustrum.
-\item Todas las coordenadas que se encuentran dentro de la caja del Frustrum son mostrados en pantalla.
+\item Este volumen de recorte es comúnmente llamado Frustum.
+\item Todas las coordenadas que se encuentran dentro de la caja del Frustum son mostrados en pantalla.
 \end{itemize}
 \end{frame}
 
@@ -158,9 +158,9 @@ Si importar cual sea el tipo de proyección, ambas tienen los siguientes element
 
 \begin{frame}\frametitle{\rule{0mm}{10mm}\rule{5mm}{0mm} Proyección ortogonal }
 \begin{itemize}
-\item La matriz de una proyección ortogonal define una especie de caja como frustrum, la cual define el espacio de recorte.
+\item La matriz de una proyección ortogonal define una especie de caja como frustum, la cual define el espacio de recorte.
 \item Los vértices que quedan fuera de la caja son recortados.
-\item Para especificar la matriz de proyección ortográfica es necesario definir ancho, alto y largo del frustrum.
+\item Para especificar la matriz de proyección ortográfica es necesario definir ancho, alto y largo del frustum.
 \end{itemize}
 \end{frame}
 
@@ -197,7 +197,7 @@ $
 \\
 \textbf{glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 0.1f, 100.0f);}
 
-\item Los primeros dos parámetros especifican las coordenadas izquierda y derecha del frustrum.
+\item Los primeros dos parámetros especifican las coordenadas izquierda y derecha del frustrm.
 \item Los parámetros 3 y 4 especifican la parte inferior y superior.
 \item Los parámetros 5 y 6 especifican la distancia entre el plano cercano y plano lejano.
 \end{itemize}
