@@ -1,0 +1,76 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+ 
+\renewcommand\lstlistingname{Algorithm}
+\renewcommand\lstlistlistingname{Algorithms}
+\def\lstlistingautorefname{Alg.}
+
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+%\newcommand\course{CSE 3500}
+%\newcommand\hwnumber{1}                  % <-- homework number
+%\newcommand\NetIDa{netid19823}           % <-- NetID of person #1
+%\newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+
+\pagestyle{fancyplain}
+\headheight 35pt
+%\lhead{\NetIDa}
+%\lhead{\NetIDa\\\NetIDb}                 % <-- Comment this line out for problem sets (make sure you are person #1)
+\chead{\textbf{\Large Proyecto Final\\
+Curso: Computaci\'on Gr\'afica e Interacci\'on Humano Computadora, \\ Semestre 2020-1}}
+\rhead{\today}
+\lfoot{}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 5.5em
+
+\begin{document}
+
+\section*{Objetivo:}
+\begin{itemize}
+\item El alumno presentará en su proyecto final las t\'ecnicas de graficación para la visualizaci\'on de un ambiente tridimensional que consiste en la representaci\'on y animaciones de un parque de diversiones.
+\end{itemize}
+
+\textbf{Fecha de Entrega:} 14 de Noviembre del 2019.
+
+
+\section*{Especificaciones:}
+
+\begin{enumerate}
+\item Integre el segmentador de color realizado en el m\'odulo 3 del diplomado con ROS.
+\item Modifique la m\'aquina de estados del comportamiento que evade obst\'aculos y se dirige a un destino (objeto de color) del m\'odulo 2 del diplomado utilizando el turtlebot.
+\item La localizaci\'on de los objetos destino se realizar\'a por cuadrantes.
+\item Utilice ROS para el env\'io de im\'agenes y movimiento del Robot, entre su computadora y el turtlebot.
+\item Dado un punto inicial aleatorio el robot deber\'a ser capaz de llegar a dos puntos objetivo (distintos colores) evadiendo obst\'aculos, utilizando m\'aquinas de estados y visi\'on computacional.
+\end{enumerate}
+
+
+\end{document}
+
