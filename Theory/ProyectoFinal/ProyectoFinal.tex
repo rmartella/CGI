@@ -1,0 +1,89 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{fullpage}
+\usepackage[top=2cm, bottom=4.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage{lastpage}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+\hypersetup{%
+  colorlinks=true,
+  linkcolor=blue,
+  linkbordercolor={0 0 1}
+}
+ 
+\renewcommand\lstlistingname{Algorithm}
+\renewcommand\lstlistlistingname{Algorithms}
+\def\lstlistingautorefname{Alg.}
+
+\lstdefinestyle{Python}{
+    language        = Python,
+    frame           = lines, 
+    basicstyle      = \footnotesize,
+    keywordstyle    = \color{blue},
+    stringstyle     = \color{green},
+    commentstyle    = \color{red}\ttfamily
+}
+
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+
+% Edit these as appropriate
+%\newcommand\course{CSE 3500}
+%\newcommand\hwnumber{1}                  % <-- homework number
+%\newcommand\NetIDa{netid19823}           % <-- NetID of person #1
+%\newcommand\NetIDb{netid12038}           % <-- NetID of person #2 (Comment this line out for problem sets)
+
+\pagestyle{fancyplain}
+\headheight 35pt
+%\lhead{\NetIDa}
+%\lhead{\NetIDa\\\NetIDb}                 % <-- Comment this line out for problem sets (make sure you are person #1)
+\chead{\textbf{\Large Proyecto Final\\
+Curso: Lab. Computaci\'on Gr\'afica e Interacci\'on Humano Computadora \\ Semestre 2020-1}}
+\rhead{\today}
+\lfoot{}
+\cfoot{}
+\rfoot{\small\thepage}
+\headsep 5.5em
+
+\begin{document}
+
+\section*{Objetivo:}
+\begin{itemize}
+\item El alumno presentar\'a en su proyecto final las t\'ecnicas de graficación para la visualizaci\'on de un ambiente tridimensional que consiste en la representaci\'on y animaciones de festividades en M\'exico. 
+\end{itemize}
+
+\textbf{Fecha de Entrega:} 27 de Noviembre del 2019.
+
+
+\section*{Especificaciones:}
+
+\begin{enumerate}
+\item El proyecto se debe entregar individualmente o en equipos como m\'aximo de dos personas.
+\item Se deben modelar dos casas con diferentes tem\'aticas, una casa del terror y una casa navideña.
+\item La casa del terror debe contener una ofrenda, calabazas, una vela alumbrando a la ofrenda, pan de muerto, flores, calaberas, otros tipos de adornos y multiples animaciones de esta tem\'atica.
+\item La otra casa debe enforcarse a las tradiciones navideñas, se debe ambientar con luces navideñas, con un \'arbol de navidad, piñatas, rosca de reyes, nacimiento (colocar pesebre, ladera rodeado de agua), regalos, dulces, otros objetos y colocar las animaci\'ones referentes a estas fechas.
+\item Colocar un evento que simule que tocan el timbre de la casa del terror, cuando suceda la camara debe dejar el control normal, tiene que ir por una canasta de ducles, e ir a la entrada para entregar dulces al personaje que tocó, se debe colocar un tipo de luz spot-light y la canasta se debe colocar a lado.
+\end{enumerate}
+
+\section*{Puntos a evaluar:}
+\begin{enumerate}
+\item Elementos en 3D \textbf{(1 Punto cada casa)}
+\item Cada cuarto de la casa debe estár iluminado de manera independiente, se deben prender cuando se entre a cada cuarto \textbf{(1 Punto cada casa)}, la ofrenda debe contener velas (Luces posicionales) \textbf{(1 Punto)}, para la casa de ambiente navideño colocar luces (animaciones, colores) para el arbol de navidad y para el nacimiento \textbf{(1 Punto por cada uno)}.
+\item Buena ambientación por cada casa (texturas, dimensiones, piso). \textbf{(1 Punto cada casa)}
+\item Colocar 3 animaciones por cada casa, (al menos una por keyframes). \textbf{(2 Puntos por cada casa)}, si se agregan dos animaciones extras por cada casa \textbf{(1 Punto por cada casa)}
+\item Manejar seis cámaras, una cámara libres por cada casa, una cámara que realiza un recorrido autompático por cada casa, una camara que se coloca en la ofrenda y otra en el nacimiento \textbf{(2 Puntos cada casa)}.
+\item Agregar una librería de audio espacial para ambientar cada casa \textbf{(1 Punto por cada casa)}
+\end{enumerate}
+
+La calificación del proyecto es 10 que corresponde a un total de 18 puntos, se puede alcanzar un máximo de 20 puntos.
+
+\end{document}
+
